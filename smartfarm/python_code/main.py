@@ -13,7 +13,6 @@ import RPi.GPIO as GPIO
 
 
 
-
 import smbus			#import SMBus module of I2C
 from time import sleep          #import
 
@@ -124,10 +123,10 @@ app = QApplication(sys.argv)
 window = QMainWindow()
 layout = QVBoxLayout()
 
-temperature_label = QLabel("Temperature:")
-humidity_label = QLabel("Humidity:")
-light_label = QLabel("Light:")
-soil_label = QLabel("Soil moisture:")
+temperature_label = QLabel("Temperature")
+humidity_label = QLabel("Humidity")
+light_label = QLabel("Light")
+soil_label = QLabel("Soil moisture")
 water_label = QLabel("물통의 물이 있는지 체크합니다.")
 mpu_label = QLabel("수평을 체크합니다.")
 
@@ -138,6 +137,8 @@ light_label.setFont(font)
 soil_label.setFont(font)
 water_label.setFont(font)
 mpu_label.setFont(font)
+
+
 
 layout.addWidget(temperature_label)
 layout.addWidget(humidity_label)
@@ -152,6 +153,7 @@ widget.setLayout(layout)
 
 window.setCentralWidget(widget)
 window.setWindowTitle("smartFarm")
+window.setStyleSheet("background-color: white;")
 window.show()
 
 
@@ -169,6 +171,11 @@ while True:
         dC.insertSensor1(temperatureValue)
         temperature_label.setText("Temperature(°C) : " + str(temperatureValue))
         app.processEvents()
+        temperature_label.setStyleSheet("color: blue;"
+                       "background-color: #87CEFA;"
+                       "border-style: dashed;"
+                       "border-width: 3px;"
+                       "border-color: #1E90FF")
         
 
     if "humidity:" in data:
@@ -177,6 +184,11 @@ while True:
         dC.insertSensor2(humidityValue)
         humidity_label.setText("Humidity(%) : " + str(humidityValue))
         app.processEvents()
+        humidity_label.setStyleSheet("color: blue;"
+                       "background-color: #87CEFA;"
+                       "border-style: dashed;"
+                       "border-width: 3px;"
+                       "border-color: #1E90FF")
      
 
     if "light :" in data:
@@ -185,6 +197,11 @@ while True:
         dC.insertSensor3(adc1Value)
         light_label.setText("Light : " + str(adc1Value))
         app.processEvents()
+        light_label.setStyleSheet("color: blue;"
+                       "background-color: #87CEFA;"
+                       "border-style: dashed;"
+                       "border-width: 3px;"
+                       "border-color: #1E90FF")
         
 
     if "soil :" in data:
@@ -192,7 +209,15 @@ while True:
         adc2Value = adc2
         dC.insertSensor4(adc2Value)
         soil_label.setText("Soil moisture : " + str(adc2Value))
+        soil_label.setStyleSheet("color: blue;"
+                       "background-color: #87CEFA;"
+                       "border-style: dashed;"
+                       "border-width: 3px;"
+                       "border-color: #1E90FF")
         app.processEvents()
+
+
+
 
     #불꽃감지 센서 관련 동작
     val = GPIO.input(inputPin)
@@ -211,10 +236,20 @@ while True:
 
     if (read_sensor() == 0):
         water_label.setText("물통에 물이 충분합니다.")
-        water_label.setStyleSheet("QLabel { color : black; }")
+        water_label.setStyleSheet("color: green;"
+                      "border-style: dashed;"
+                      "border-width: 3px;"
+                      "border-color: #7FFFD4;;"
+                      "background-color: white;"
+                      "border-radius: 3px")
     else:
         water_label.setText("경고 : 물통에 물이 부족합니다!!")
-        water_label.setStyleSheet("QLabel { color : red; }")
+        water_label.setStyleSheet("color: red;"
+                      "border-style: dashed;"
+                      "border-width: 3px;"
+                      "border-color: #FA8072;"
+                      "background-color: white;"
+                      "border-radius: 3px")
 
 
 
@@ -248,21 +283,41 @@ while True:
 
     if Ax>0.35 or Ax<-0.35:
         mpu_label.setText("경고!! 수평이 맞지 않습니다!!")
-        mpu_label.setStyleSheet("QLabel { color : red; }")
+        mpu_label.setStyleSheet("color: red;"
+                      "border-style: dashed;"
+                      "border-width: 3px;"
+                      "border-color: #FA8072;"
+                      "background-color: white;"
+                      "border-radius: 3px")
 
     elif Ay>0.2 or Ay<-0.2:
         mpu_label.setText("경고!! 수평이 맞지 않습니다!!")
-        mpu_label.setStyleSheet("QLabel { color : red; }")
+        mpu_label.setStyleSheet("color: red;"
+                      "border-style: dashed;"
+                      "border-width: 3px;"
+                      "border-color: #FA8072;"
+                      "background-color: white;"
+                      "border-radius: 3px")
         
 
     elif Az>1.05:
         mpu_label.setText("경고!! 수평이 맞지 않습니다!!")
-        mpu_label.setStyleSheet("QLabel { color : red; }")
+        mpu_label.setStyleSheet("color: red;"
+                      "border-style: dashed;"
+                      "border-width: 3px;"
+                      "border-color: #FA8072;"
+                      "background-color: white;"
+                      "border-radius: 3px")
     
 
     else:
         mpu_label.setText("수평 이상 없습니다.")
-        mpu_label.setStyleSheet("QLabel { color : black; }")
+        mpu_label.setStyleSheet("color: green;"
+                      "border-style: dashed;"
+                      "border-width: 3px;"
+                      "border-color:#7FFFD4;"
+                      "background-color: white;"
+                      "border-radius: 3px")
 
 
 # GPIO 정리
