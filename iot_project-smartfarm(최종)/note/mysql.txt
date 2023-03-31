@@ -1,0 +1,63 @@
+-mysql 접속
+sudo mysql -u 아이디 -p
+
+
+-데이터베이스 보기
+SHOW DATABASES;
+
+
+-데이터베이스 생성
+CREATE DATEBASE 데이터베이스명;
+
+
+-데이터베이스 접속(사용)
+use 데이터베이스명;
+
+-테이블 생성
+CREATE TABLE 테이블명(필드명 자료형(크기) ..);
+
+-테이블 제거
+DROP TABLE 테이블명;
+
+
+
+-테이블값 추가
+INSERT INTO 테이블명 VALUES(데이터값); 
+
+또는 
+
+INSERT INTO 테이블명(필드명) VALUES데이터값;
+
+
+
+
+
+
+ *테이블 필드 추가
+ALTER TABLE 테이블명 ADD 컬럼명 자료형(크기) NULL;
+
+(맨앞 추가는 뒤에 FIRST, 지정 위치 추가는 AFTER 앞 필드명 을 붙인다.)
+
+
+
+
+-필드 삭제
+ALTER TABLE 테이블명 DROP 필드명;
+
+
+
+
+-특정 레코드의 필드의 데이터값 변경
+update 테이블명 set 바꿀 필드=바꿀 데이터값 where 특정레코드 필드명=해당 필드 데이터값
+
+
+-레코드 삭제
+delete from 테이블 이름 where 해당레코드 필드 이름=데이터값;
+
+
+
+-desc 테이블 이름;
+
+
+-테이블내용 전체삭제(값 초기화)
+TRUNCATE 테이블명;
