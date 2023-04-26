@@ -39,7 +39,7 @@ else
 
 
 
-UART
+UART 문자 출력
 
 int main
 {	
@@ -53,3 +53,33 @@ int main
 	  	HAL_Delay(1000);
 	}
 }
+
+
+
+
+
+
+
+UART 입력 LED 제어
+
+int main
+{	
+	 MX_USART3_UART_Init();
+	
+	uint8_t data;
+
+	while(1)
+	{
+		 HAL_UART_Receive(&huart3, &data,sizeof(&data), 100);
+	 	if(data == 'a')
+	  	{
+		  HAL_GPIO_WritePin(GPIOB, LD1_Pin, GPIO_PIN_SET);
+
+		 }
+
+	  	else if(data == 'b')
+	  	{
+		  HAL_GPIO_WritePin(GPIOB, LD1_Pin, GPIO_PIN_RESET);
+
+		}
+	}
