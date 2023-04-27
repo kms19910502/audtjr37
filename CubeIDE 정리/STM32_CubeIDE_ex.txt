@@ -1,0 +1,240 @@
+ODR:Output data register
+
+
+GPIOD -> ODR |= GPIO_Pin_12;   //PD12를 HIGH
+
+GPIOD -> ODR &= ~GPIO_Pin_12;   //PD12를 LOW
+
+GPIOD -> ODR ^= GPIO_Pin_12;   //PD12를 Toggle
+
+
+
+GPIOD -> ODR |= (GPIO_Pin_12|GPIO_Pin_13|GPIO_Pin_14);   //PD12,13,14를 HIGH
+
+GPIOD -> ODR &= ~(GPIO_Pin_12|GPIO_Pin_13|GPIO_Pin_14);   //PD12,13,14를 LOW
+
+GPIOD -> ODR ^= (GPIO_Pin_12|GPIO_Pin_13|GPIO_Pin_14);  //PD12,13,14를 Toggle
+
+
+
+
+
+스위치
+
+if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13)==1)
+{
+	HAL_GPIO_WritePin(GPIOB, LD1_Pin|LD3_Pin|LD2_Pin, GPIO_PIN_SET);
+	HAL_Delay(1000);
+		  
+}
+
+else
+{
+	HAL_GPIO_WritePin(GPIOB, LD1_Pin|LD3_Pin|LD2_Pin, GPIO_PIN_RESET);
+	HAL_Delay(1000); 
+}
+
+
+
+
+
+
+UART 문자 출력
+
+int main
+{	
+	 MX_USART3_UART_Init();
+	
+	uint8_t str[]="HELLO WORLD!!\n\r";
+
+	while(1)
+	{
+		HAL_UART_Transmit(&huart3, str, sizeof(str), 100);
+	  	HAL_Delay(1000);
+	}
+}
+
+
+
+
+
+
+
+UART 입력 LED 제어
+
+int main
+{	
+	 MX_USART3_UART_Init();
+	
+	uint8_t data;
+
+	while(1)
+	{
+		 HAL_UART_Receive(&huart3, &data,sizeof(&data), 100);
+	 	if(data == 'a')
+	  	{
+		  HAL_GPIO_WritePin(GPIOB, LD1_Pin, GPIO_PIN_SET);
+
+		 }
+
+	  	else if(data == 'b')
+	  	{
+		  HAL_GPIO_WritePin(GPIOB, LD1_Pin, GPIO_PIN_RESET);
+
+		}
+	}
+
+
+
+
+
+
+
+
+
+printf 사용
+
+#include <stdio.h>
+
+
+
+int _write(int file, char* p, int len)
+{
+	HAL_UART_Transmit(&huart3, p, len, 10);
+	return len;
+}
+
+
+int main(void)
+{
+	MX_USART3_UART_Init();
+
+	while(1)
+	{
+		printf("Hello\n\r");
+	 	HAL_Delay(1000);
+	}
+}
+
+
+
+
+
+
+printf 사용2 변수값 1씩 증가 하면서 출력
+
+#include <stdio.h>
+
+
+
+int _write(int file, char* p, int len)
+{
+	HAL_UART_Transmit(&huart3, p, len, 10);
+	return len;
+}
+
+
+int main(void)
+{
+	MX_USART3_UART_Init();
+	uint8_t a = 0;   //변수 a 선언 
+	while(1)
+	{
+		printf("Hello %d \n\r", a++);  //a의 값이 1씩 증가
+	 	HAL_Delay(1000);
+	}
+}
+
+
+
+
+
+
+
+
+
+printf 사용3 실수 출력
+
+
+프로젝트 우클릭-properties-C/C++ Build-settings에서
+other flags에    -u _printf_float 추가 먼저 해야함.
+
+
+
+#include <stdio.h>
+
+
+
+int _write(int file, char* p, int len)
+{
+	HAL_UART_Transmit(&huart3, p, len, 10);
+	return len;
+}
+
+
+int main(void)
+{
+	MX_USART3_UART_Init();
+	float f = 1.234;
+	while(1)
+	{
+		printf("Hello %f \n\r", f);
+	 	HAL_Delay(1000);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+UART 인터럽트 메아리
+
+*설정 변경할것 있으니 사진 참조
+
+
+/* USER CODE BEGIN PV */
+uint8_t rx3_data;
+/* USER CODE END PV */
+
+
+
+int main(void)
+{
+	MX_USART3_UART_Init();
+
+/* Initialize interrupts */
+  
+	MX_NVIC_Init();
+
+/* USER CODE BEGIN 2 */
+	
+	HAL_UART_Receive_IT(&huart3, &rx3_data, 1);
+
+/* USER CODE END 2 */
+
+
+ 	while (1)
+  	{
+    
+  	}
+  
+}
+
+
+/* USER CODE BEGIN 4 */
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	if(huart->Instance == USART3)
+	{
+		HAL_UART_Receive_IT(&huart3, &rx3_data, 1);
+		HAL_UART_Transmit(&huart3, &rx3_data, 1, 10);
+	}
+}
+/* USER CODE END 4 */
