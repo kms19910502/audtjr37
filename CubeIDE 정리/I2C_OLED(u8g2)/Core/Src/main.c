@@ -25,6 +25,7 @@
 #include "u8g2.h"
 #include "u8x8.h"
 #include "u8g2_stm32.h"
+#include <stdio.h>
 
 /* USER CODE END Includes */
 
@@ -73,6 +74,7 @@ static void MX_USB_OTG_FS_PCD_Init(void);
 static void MX_I2C1_Init(void);
 /* USER CODE BEGIN PFP */
 
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -87,7 +89,8 @@ static void MX_I2C1_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+int32_t i = 0;
+int8_t str[32];
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -133,6 +136,9 @@ u8g2stm32_init(&u8g2);
 
 	  u8g2_SetFont(&u8g2, u8g2_font_unifont_t_korean1);
 	  u8g2_DrawUTF8(&u8g2, 5 , 35 ,"안녕 하세요");
+
+	  sprintf(str, "%d", i++);
+	  u8g2_DrawStr(&u8g2, 5 , 55, str);
 	  u8g2_SendBuffer(&u8g2);
 	  HAL_Delay(1000);
   }
