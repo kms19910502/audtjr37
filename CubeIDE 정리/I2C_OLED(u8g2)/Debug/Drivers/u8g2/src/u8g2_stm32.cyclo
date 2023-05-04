@@ -1,0 +1,3 @@
+u8g2_stm32.c:12:6:u8g2stm32_init	1
+u8g2_stm32.c:22:9:u8x8_byte_stm32hal_hw_i2c	7
+u8g2_stm32.c:64:9:stm32_gpio_and_delay_cb	5
