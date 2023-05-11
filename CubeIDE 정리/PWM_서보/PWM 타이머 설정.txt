@@ -1,0 +1,7 @@
+PWM 타이머 설정
+
+해당 타이머의 'Timer clocks/펄스 주기' 값이 PreScaler 값과 Period 값의 곱이 같도록 PreScaler값과 Period을 설정.
+
+예)Timer clocks 이 168MHz 인 경우 펄주 주기를 50Hz(20ms)으로 맞추려면 168000000/50 =336,0000 의 값과
+PreScaler 값과 Period 값의 곱이 같도록 설정 해야 하므로 PreScaler를 336-1 , Period 를 10000-1 로 설정.
+여기서 펄스폭을 0.2ms으로 맞추고 싶다면 지금 Period가 10000-1 이므로 20/10000*100 을 하면 0.2 이므로 펄스폭 값을 100으로 설정. 
